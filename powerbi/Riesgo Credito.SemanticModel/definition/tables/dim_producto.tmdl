@@ -1,0 +1,32 @@
+table dim_producto
+	lineageTag: ed86d547-ac4e-44fd-b450-b2a7f5ae4023
+
+	column producto
+		dataType: string
+		lineageTag: 90076d81-d100-44cc-9be0-cde1b3ea2e1c
+		summarizeBy: none
+		sourceColumn: producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_producto
+		dataType: string
+		lineageTag: c35252f1-685c-494e-8af4-33d7968ffd09
+		summarizeBy: none
+		sourceColumn: nombre_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_producto = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "dim_producto", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

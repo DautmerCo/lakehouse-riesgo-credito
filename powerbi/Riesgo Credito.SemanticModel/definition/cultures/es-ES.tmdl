@@ -1,0 +1,74 @@
+cultureInfo es-ES
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "fact_cartera_mensual.cohorte": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_cartera_mensual",
+			          "ConceptualProperty": "cohorte"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cohorte": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_cartera_mensual.meses_de_vida": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_cartera_mensual",
+			          "ConceptualProperty": "meses_de_vida"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Meses de vida": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "fact_cartera_mensual.bucket_mora": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_cartera_mensual",
+			          "ConceptualProperty": "bucket_mora"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Bucket": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json
+

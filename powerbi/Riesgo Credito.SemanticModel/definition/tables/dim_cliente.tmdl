@@ -1,0 +1,107 @@
+table dim_cliente
+	lineageTag: c52ba3e7-f067-4e20-bbd0-fb7ea11e1034
+
+	column cliente_sk
+		dataType: string
+		lineageTag: 562ba9a5-a3ff-4ac9-9ef1-2c854f1e0b90
+		summarizeBy: none
+		sourceColumn: cliente_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_id
+		dataType: string
+		lineageTag: 443be224-dd61-4acd-87bc-ca170fb17b8c
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ciudad
+		dataType: string
+		lineageTag: 8e7a488c-91a8-46c1-ab12-559adefab692
+		summarizeBy: none
+		sourceColumn: ciudad
+
+		annotation SummarizationSetBy = Automatic
+
+	column ocupacion
+		dataType: string
+		lineageTag: fadc5d03-7090-4340-8d9e-a0516cc0a890
+		summarizeBy: none
+		sourceColumn: ocupacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column ingreso_mensual
+		dataType: double
+		formatString: \$ #,0
+		lineageTag: 0c6802ae-45d0-4523-8ea9-0a757638143d
+		summarizeBy: none
+		sourceColumn: ingreso_mensual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column score_buro
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f49f8cf-2947-4245-82be-3f7f02260d4a
+		summarizeBy: none
+		sourceColumn: score_buro
+
+		annotation SummarizationSetBy = Automatic
+
+	column banda_score
+		dataType: string
+		lineageTag: 62552cb7-1335-4cbb-a80c-630bb5c83a07
+		summarizeBy: none
+		sourceColumn: banda_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column vigente_desde
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c07bba0f-4f15-47b8-9861-9b5a4e8858ea
+		summarizeBy: none
+		sourceColumn: vigente_desde
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column vigente_hasta
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: baa503f8-2843-4b7e-a4f0-36339558c609
+		summarizeBy: none
+		sourceColumn: vigente_hasta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column es_actual
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 93dac06b-93c9-4f56-8772-6b5d82c92a60
+		summarizeBy: none
+		sourceColumn: es_actual
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_cliente = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "dim_cliente", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,82 @@
+table dim_fecha
+	lineageTag: b1779e19-8b25-4c8b-b915-511ae29f212b
+	dataCategory: Time
+
+	column fecha
+		dataType: dateTime
+		isUnique
+		formatString: Long Date
+		lineageTag: 5ca328e2-87e6-4dcc-a8c9-ea3687f65c81
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column anio
+		dataType: int64
+		formatString: 0
+		lineageTag: 3aa95db3-961a-4848-9909-406d3038f5bb
+		summarizeBy: none
+		sourceColumn: anio
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f60e366-9990-476b-9114-425825a8b1b6
+		summarizeBy: none
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_mes
+		dataType: string
+		lineageTag: 7f3ec8b2-3c11-4ae1-9942-80b7722c0ced
+		summarizeBy: none
+		sourceColumn: nombre_mes
+		sortByColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column anio_mes
+		dataType: string
+		lineageTag: 9604e5e4-55d6-416e-8460-4405e4c8fb13
+		summarizeBy: none
+		sourceColumn: anio_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column trimestre
+		dataType: int64
+		formatString: 0
+		lineageTag: e4762d8e-12ab-4a88-b168-7eace6c2ffbd
+		summarizeBy: none
+		sourceColumn: trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column es_fin_de_mes
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f70d3dd7-eec2-4de8-9c44-8b0f7410ec06
+		summarizeBy: none
+		sourceColumn: es_fin_de_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_fecha = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "dim_fecha", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

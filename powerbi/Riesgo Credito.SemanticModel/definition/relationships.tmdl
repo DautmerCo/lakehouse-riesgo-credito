@@ -1,0 +1,48 @@
+relationship AutoDetected_22e35d09-32b5-4b57-9063-5aa4a35fde93
+	fromColumn: fact_cartera_mensual.canal
+	toColumn: dim_canal.canal
+
+relationship AutoDetected_65e4a649-00dd-46c4-bc2b-c3ce442c35c3
+	fromColumn: fact_prestamos.canal
+	toColumn: dim_canal.canal
+
+relationship AutoDetected_f20dafb8-1f2e-402e-9784-5d66cb3e8985
+	fromColumn: fact_solicitudes.canal
+	toColumn: dim_canal.canal
+
+relationship AutoDetected_b5f8f7d3-b439-4430-87ab-cd157d422d89
+	fromColumn: fact_cartera_mensual.cliente_sk
+	toColumn: dim_cliente.cliente_sk
+
+relationship AutoDetected_a332fb04-5108-4202-9c51-a647b0685f48
+	fromColumn: fact_prestamos.cliente_sk
+	toColumn: dim_cliente.cliente_sk
+
+relationship AutoDetected_0390b88f-ec8a-4364-96dd-cdd9c132c57c
+	fromColumn: fact_solicitudes.cliente_sk
+	toColumn: dim_cliente.cliente_sk
+
+relationship AutoDetected_e0e273ee-2114-4b02-a877-7eecc32d84d4
+	fromColumn: fact_cartera_mensual.producto
+	toColumn: dim_producto.producto
+
+relationship AutoDetected_16a4a2e5-8a88-430f-bddf-50a4c75a9785
+	fromColumn: fact_prestamos.producto
+	toColumn: dim_producto.producto
+
+relationship AutoDetected_6e9c796d-c18b-42a1-b7b5-5426f0418214
+	fromColumn: fact_solicitudes.producto
+	toColumn: dim_producto.producto
+
+relationship fact_solicitudes_fecha_solicitud_dim_fecha_fecha
+	fromColumn: fact_solicitudes.fecha_solicitud
+	toColumn: dim_fecha.fecha
+
+relationship fact_prestamos_fecha_desembolso_dim_fecha_fecha
+	fromColumn: fact_prestamos.fecha_desembolso
+	toColumn: dim_fecha.fecha
+
+relationship fact_cartera_mensual_fecha_cierre_dim_fecha_fecha
+	fromColumn: fact_cartera_mensual.fecha_cierre
+	toColumn: dim_fecha.fecha
+

@@ -1,0 +1,27 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-ES
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup Parámetros
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["dim_canal","dim_cliente","dim_fecha","dim_producto","fact_cartera_mensual","fact_prestamos","fact_solicitudes"]
+
+annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
+
+ref table dim_canal
+ref table dim_cliente
+ref table dim_fecha
+ref table dim_producto
+ref table fact_cartera_mensual
+ref table fact_prestamos
+ref table fact_solicitudes
+
+ref cultureInfo es-ES
+

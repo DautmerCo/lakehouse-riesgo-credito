@@ -1,0 +1,152 @@
+table fact_solicitudes
+	lineageTag: df0b7d94-eda7-4154-967e-01ae494badca
+
+	/// Número de solicitudes de crédito recibidas.
+	measure Solicitudes = COUNTROWS ( fact_solicitudes )
+		formatString: #,0
+		displayFolder: Originación
+		lineageTag: 46b7a9a9-afb6-4945-b34c-1c97fb657e9b
+
+	/// Solicitudes que pasaron la política de crédito.
+	measure 'Solicitudes aprobadas' = CALCULATE ( [Solicitudes], fact_solicitudes[aprobada] = TRUE () )
+		formatString: #,0
+		displayFolder: Originación
+		lineageTag: a1a0592f-4e2c-490d-8335-af8b9df195be
+
+	/// Solicitudes que terminaron en un préstamo desembolsado.
+	measure 'Solicitudes desembolsadas' = CALCULATE ( [Solicitudes], fact_solicitudes[desembolsada] = TRUE () )
+		formatString: #,0
+		displayFolder: Originación
+		lineageTag: bf110c8b-ae75-4113-b79f-576d58b9446d
+
+	/// Solicitudes aprobadas sobre solicitudes recibidas.
+	measure '% Aprobación' = DIVIDE ( [Solicitudes aprobadas], [Solicitudes] )
+		formatString: 0.0%
+		displayFolder: Originación
+		lineageTag: 712bcc73-1789-48d9-aa86-a48ab61fe69c
+
+	/// Solicitudes desembolsadas sobre solicitudes recibidas.
+	measure '% Desembolso' = DIVIDE ( [Solicitudes desembolsadas], [Solicitudes] )
+		formatString: 0.0%
+		displayFolder: Originación
+		lineageTag: b6d06046-ed95-41af-ba52-d516b455a722
+
+	column solicitud_id
+		dataType: string
+		lineageTag: 0b696f10-3d5c-4ec9-a638-f4b7e4710e29
+		summarizeBy: none
+		sourceColumn: solicitud_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_sk
+		dataType: string
+		lineageTag: 30641af2-27a8-42dd-8494-96e3d98f7a2b
+		summarizeBy: none
+		sourceColumn: cliente_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_solicitud
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 546a167c-1f78-416a-83f6-74224532b9f1
+		summarizeBy: none
+		sourceColumn: fecha_solicitud
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column producto
+		dataType: string
+		lineageTag: ee0c7568-5ce2-41a6-84a2-66c37b50b3e1
+		summarizeBy: none
+		sourceColumn: producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column canal
+		dataType: string
+		lineageTag: de0a1c6d-eb40-485a-8501-12b8ad589199
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column monto_solicitado
+		dataType: double
+		formatString: \$ #,0
+		lineageTag: 2b3ba4f2-8392-40ed-833e-918f981bf2e3
+		summarizeBy: sum
+		sourceColumn: monto_solicitado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column plazo_meses
+		dataType: int64
+		formatString: 0
+		lineageTag: 388991c4-7b18-49b6-80e4-ffb1f00f495c
+		summarizeBy: none
+		sourceColumn: plazo_meses
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_buro
+		dataType: int64
+		formatString: 0
+		lineageTag: 71f2fb4a-f814-4c5b-a407-44651ae6f545
+		summarizeBy: none
+		sourceColumn: score_buro
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado
+		dataType: string
+		lineageTag: 3dadde13-d26c-428a-8d1b-6cbb499c5722
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column motivo_rechazo
+		dataType: string
+		lineageTag: 25dcd87c-ede9-4bb1-af38-b4e62db64dd4
+		summarizeBy: none
+		sourceColumn: motivo_rechazo
+
+		annotation SummarizationSetBy = Automatic
+
+	column aprobada
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8e278f47-7485-4832-9811-c1ed84137164
+		summarizeBy: none
+		sourceColumn: aprobada
+
+		annotation SummarizationSetBy = Automatic
+
+	column desembolsada
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 20bf59d6-68e3-4f31-bacd-47c4a7806c80
+		summarizeBy: none
+		sourceColumn: desembolsada
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_solicitudes = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "fact_solicitudes", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

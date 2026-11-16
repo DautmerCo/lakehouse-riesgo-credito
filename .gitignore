@@ -1,0 +1,10 @@
+# Datos generados y artefactos locales
+datos/salida/
+__pycache__/
+.pytest_cache/
+.venv/
+# Estado local de Databricks Asset Bundles
+.databricks/
+# Power BI: caché de datos y configuración local
+**/.pbi/cache.abf
+**/.pbi/localSettings.json

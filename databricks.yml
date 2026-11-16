@@ -1,0 +1,15 @@
+bundle:
+  name: riesgo_credito
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    presets:
+      name_prefix: "[dev] "
+    workspace:
+      profile: DEFAULT
+

@@ -1,0 +1,205 @@
+table fact_cartera_mensual
+	lineageTag: 4e9cbe02-69a1-4d16-b50d-5c2f0524c16e
+
+	/// Último cierre de mes dentro del contexto. Ignora los filtros de mora para que todos los buckets se midan en la misma fecha.
+	measure 'Fecha último cierre' =
+			CALCULATE (
+			    MAX ( fact_cartera_mensual[fecha_cierre] ),
+			    REMOVEFILTERS (
+			        fact_cartera_mensual[bucket_mora],
+			        fact_cartera_mensual[bucket_orden],
+			        fact_cartera_mensual[dias_mora]
+			    )
+			)
+		formatString: dd/mm/yyyy
+		displayFolder: Cartera
+		lineageTag: 0eb3b708-5069-4042-b5e9-f9e79d03fa1c
+
+	/// Saldo de capital en el último cierre del contexto. Es semiaditiva: no suma saldos de distintos cierres.
+	measure 'Saldo cartera' =
+			VAR UltimoCierre = [Fecha último cierre]
+			RETURN
+			    CALCULATE (
+			        SUM ( fact_cartera_mensual[saldo_capital] ),
+			        fact_cartera_mensual[fecha_cierre] = UltimoCierre
+			    )
+		formatString: \$ #,0
+		displayFolder: Cartera
+		lineageTag: a312ba57-3b29-483d-bfed-3d441e6acc7b
+
+	/// Préstamos vigentes en el último cierre del contexto.
+	measure 'Préstamos en cartera' =
+			VAR UltimoCierre = [Fecha último cierre]
+			RETURN
+			    CALCULATE (
+			        COUNTROWS ( fact_cartera_mensual ),
+			        fact_cartera_mensual[fecha_cierre] = UltimoCierre
+			    )
+		formatString: #,0
+		displayFolder: Cartera
+		lineageTag: 92d8caa3-083e-411e-afd0-502604978cb0
+
+	/// Saldo de los préstamos con más de 30 días de mora.
+	measure 'Saldo mora 30+' = CALCULATE ( [Saldo cartera], fact_cartera_mensual[dias_mora] > 30 )
+		formatString: \$ #,0
+		displayFolder: Cartera
+		lineageTag: 4d7fb31e-96dd-4b7d-a24e-2ca388f1e8ae
+
+	/// Indicador de calidad de cartera: saldo en mora 30+ sobre saldo total. En la matriz de cohortes da la mora de cada cohorte a cada edad.
+	measure '% Mora 30+' = DIVIDE ( [Saldo mora 30+], [Saldo cartera] )
+		formatString: 0.0%
+		displayFolder: Cartera
+		lineageTag: 6f446af2-af09-4aa6-b087-a5fe839a7092
+
+	/// Participación de cada bucket de mora en el saldo total.
+	measure '% Saldo' =
+			DIVIDE (
+			    [Saldo cartera],
+			    CALCULATE (
+			        [Saldo cartera],
+			        REMOVEFILTERS ( fact_cartera_mensual[bucket_mora], fact_cartera_mensual[bucket_orden] )
+			    )
+			)
+		formatString: 0.0%
+		displayFolder: Cartera
+		lineageTag: 5a99a7e6-220d-4cfe-a65c-004cce62a253
+
+	column prestamo_id
+		dataType: string
+		lineageTag: 1d9fce8d-325b-40f6-bb34-8e3eec195171
+		summarizeBy: none
+		sourceColumn: prestamo_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_cierre
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6057d389-5400-42b2-ad91-9b2774eda8c2
+		summarizeBy: none
+		sourceColumn: fecha_cierre
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cliente_sk
+		dataType: string
+		lineageTag: d28417fc-e916-40b6-a316-5eabf2c7aeb9
+		summarizeBy: none
+		sourceColumn: cliente_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column producto
+		dataType: string
+		lineageTag: 82aa1609-e784-4565-b846-ba08c81e3b8c
+		summarizeBy: none
+		sourceColumn: producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column canal
+		dataType: string
+		lineageTag: 29f93933-a122-49f6-9b88-3f25a5ef725d
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column cohorte
+		dataType: string
+		lineageTag: 4e6f8d36-3637-4f6f-aaec-bf9647d8d92a
+		summarizeBy: none
+		sourceColumn: cohorte
+
+		annotation SummarizationSetBy = Automatic
+
+	column meses_de_vida
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ad9bcb4-ba85-4985-9eae-eb80e72c621a
+		summarizeBy: none
+		sourceColumn: meses_de_vida
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuotas_vencidas
+		dataType: int64
+		formatString: 0
+		lineageTag: 23298471-84a0-452e-9c05-39af2e2402aa
+		summarizeBy: none
+		sourceColumn: cuotas_vencidas
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuotas_pagadas
+		dataType: int64
+		formatString: 0
+		lineageTag: efc13e9a-4d0c-4cd8-9b69-feb6a14a4aae
+		summarizeBy: none
+		sourceColumn: cuotas_pagadas
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuotas_en_atraso
+		dataType: int64
+		formatString: 0
+		lineageTag: d41dd4d0-1663-4f5d-bc7e-c949e62ca779
+		summarizeBy: none
+		sourceColumn: cuotas_en_atraso
+
+		annotation SummarizationSetBy = Automatic
+
+	column dias_mora
+		dataType: int64
+		formatString: 0
+		lineageTag: 9cc82282-1920-4f83-b3b7-31bc59696010
+		summarizeBy: none
+		sourceColumn: dias_mora
+
+		annotation SummarizationSetBy = Automatic
+
+	column bucket_mora
+		dataType: string
+		lineageTag: 3424eecc-f10c-4e82-a648-59c032bddc78
+		summarizeBy: none
+		sourceColumn: bucket_mora
+		sortByColumn: bucket_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bucket_orden
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 797422d0-1f76-46ff-9638-85bf959843b4
+		summarizeBy: none
+		sourceColumn: bucket_orden
+
+		annotation SummarizationSetBy = Automatic
+
+	column saldo_capital
+		dataType: double
+		formatString: \$ #,0
+		lineageTag: 12dd947a-a6d4-4659-9fad-d8a2ce68286a
+		summarizeBy: sum
+		sourceColumn: saldo_capital
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_cartera_mensual = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "fact_cartera_mensual", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,20 @@
+/// Server hostname del SQL warehouse de Databricks.
+expression ServidorDatabricks = "tu-workspace.cloud.databricks.com" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 36a45b1b-f8ac-4305-9f99-14da2d8caa48
+	queryGroup: Parámetros
+
+/// HTTP path del SQL warehouse de Databricks.
+expression RutaHttp = "/sql/1.0/warehouses/tu-warehouse-id" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2ed1ab0f-d3cc-411e-85bf-5a6f13ef2fe1
+	queryGroup: Parámetros
+
+/// Catálogo de Unity Catalog.
+expression Catalogo = "workspace" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: b556a64a-f9c9-45be-bfa9-8a222a4fe0c7
+	queryGroup: Parámetros
+
+/// Esquema con el modelo dimensional (capa gold).
+expression EsquemaGold = "riesgo_gold" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: bdf2bb9a-61a2-4918-b2b8-f6bfd445ca2c
+	queryGroup: Parámetros
+

@@ -1,0 +1,113 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 15.969618713107039,
+            "y": 560.24307947205455
+          },
+          "nodeIndex": "dim_canal",
+          "nodeLineageTag": "8a0d7d4f-c345-4d18-81fc-f7572bcfd1de",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 444.75194769099261,
+            "y": 677.18569790529682
+          },
+          "nodeIndex": "dim_cliente",
+          "nodeLineageTag": "c52ba3e7-f067-4e20-bbd0-fb7ea11e1034",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 939.080200023082,
+            "y": 603.07491075071039
+          },
+          "nodeIndex": "dim_fecha",
+          "nodeLineageTag": "b1779e19-8b25-4c8b-b915-511ae29f212b",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 482.91624048693484,
+            "y": 0
+          },
+          "nodeIndex": "dim_producto",
+          "nodeLineageTag": "ed86d547-ac4e-44fd-b450-b2a7f5ae4023",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 916.64237237394684,
+            "y": 0
+          },
+          "nodeIndex": "fact_cartera_mensual",
+          "nodeLineageTag": "4e9cbe02-69a1-4d16-b50d-5c2f0524c16e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 472.38411043978965,
+            "y": 254.11951537526309
+          },
+          "nodeIndex": "fact_prestamos",
+          "nodeLineageTag": "829161cb-8ac0-4914-a47d-856c15a2c9d3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 18.574481422813932,
+            "y": 35.237212826686005
+          },
+          "nodeIndex": "fact_solicitudes",
+          "nodeLineageTag": "df0b7d94-eda7-4154-967e-01ae494badca",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 70.95554390096882,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

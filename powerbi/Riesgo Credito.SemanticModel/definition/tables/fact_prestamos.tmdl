@@ -1,0 +1,135 @@
+table fact_prestamos
+	lineageTag: 829161cb-8ac0-4914-a47d-856c15a2c9d3
+
+	/// Número de préstamos desembolsados.
+	measure 'Préstamos desembolsados' = COUNTROWS ( fact_prestamos )
+		formatString: #,0
+		displayFolder: Originación
+		lineageTag: ffdf208e-f87b-4713-9a3a-26bfb683d7ac
+
+	/// Valor total desembolsado.
+	measure 'Monto desembolsado' = SUM ( fact_prestamos[monto_desembolsado] )
+		formatString: \$ #,0
+		displayFolder: Originación
+		lineageTag: ebcafeb2-f3cc-4c50-ba45-cfa1467bce47
+
+	/// Monto promedio por préstamo desembolsado.
+	measure 'Ticket promedio' = DIVIDE ( [Monto desembolsado], [Préstamos desembolsados] )
+		formatString: \$ #,0
+		displayFolder: Originación
+		lineageTag: d8ad0bfc-d066-4fd4-8a0b-cf4cab527f48
+
+	column prestamo_id
+		dataType: string
+		lineageTag: 216cd0d1-d81c-42a3-87d3-6211f95cd58f
+		summarizeBy: none
+		sourceColumn: prestamo_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column solicitud_id
+		dataType: string
+		lineageTag: ad3fbc2f-f2de-4d42-b0fd-d84e6d189d05
+		summarizeBy: none
+		sourceColumn: solicitud_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_sk
+		dataType: string
+		lineageTag: 16c4076d-e3c4-4af5-bac7-4bdcf3e40047
+		summarizeBy: none
+		sourceColumn: cliente_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column producto
+		dataType: string
+		lineageTag: d0cda241-6f69-4859-a126-4bdf41cc0f57
+		summarizeBy: none
+		sourceColumn: producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column canal
+		dataType: string
+		lineageTag: 2baa1647-8a24-4ba3-aca4-4cdcbe91df98
+		summarizeBy: none
+		sourceColumn: canal
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_desembolso
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 375ccc1b-dba3-4842-a3ce-6283ce26c9b5
+		summarizeBy: none
+		sourceColumn: fecha_desembolso
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cohorte
+		dataType: string
+		lineageTag: a49f9f7b-8e20-419a-bdee-0c4bfc246c67
+		summarizeBy: none
+		sourceColumn: cohorte
+
+		annotation SummarizationSetBy = Automatic
+
+	column monto_desembolsado
+		dataType: double
+		formatString: \$ #,0
+		lineageTag: 92adc5a1-21cc-443b-982c-bf399a3c7bc3
+		summarizeBy: sum
+		sourceColumn: monto_desembolsado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column tasa_mensual
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 0b7e4cd8-fda8-4dd2-9019-17c1e9b64c56
+		summarizeBy: none
+		sourceColumn: tasa_mensual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column plazo_meses
+		dataType: int64
+		formatString: 0
+		lineageTag: e2cca6d6-5450-4eaa-b74f-8eb51cf3a5ac
+		summarizeBy: none
+		sourceColumn: plazo_meses
+
+		annotation SummarizationSetBy = Automatic
+
+	column cuota_mensual
+		dataType: double
+		formatString: \$ #,0
+		lineageTag: 6096ddc7-06fd-4578-a328-6655871d42eb
+		summarizeBy: none
+		sourceColumn: cuota_mensual
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_prestamos = m
+		mode: import
+		source =
+				let
+				  Origen = DatabricksMultiCloud.Catalogs(ServidorDatabricks, RutaHttp, [Catalog = null, Database = null, QueryTags = null, EnableAutomaticProxyDiscovery = "enabled", Implementation = "2.0", Protocol = null]),
+				  #"Navegación 1" = Origen{[Name = Catalogo, Kind = "Database"]}[Data],
+				  #"Navegación 2" = #"Navegación 1"{[Name = EsquemaGold, Kind = "Schema"]}[Data],
+				  #"Navegación 3" = #"Navegación 2"{[Name = "fact_prestamos", Kind = "Table"]}[Data]
+				in
+				  #"Navegación 3"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Riesgo Credito"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dbecdf05-f19d-4ea7-b6e5-075b1c96b0cb"
+  }
+}
